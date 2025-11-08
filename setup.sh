@@ -18,8 +18,6 @@ export ANDROID_SDK_ROOT="$SDK_DIR"
 export ANDROID_HOME="$SDK_DIR"
 export PATH="${PATH}:${SDK_DIR}/cmdline-tools/latest/bin:${SDK_DIR}/platform-tools"
 
-echo "PATH: $PATH"
-
 if [ ! -d "$SDK_DIR/platforms/android-35" ]; then
     "$SDK_DIR/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$SDK_DIR" "platform-tools" "platforms;android-35" "build-tools;35.0.1" < /dev/null
 fi
@@ -28,16 +26,18 @@ yes | "$SDK_DIR/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$SDK_DIR" --lic
 
 echo "sdk.dir=$SDK_DIR" > local.properties
 
-# WICHTIG: Rechte für Gradle setzen
-chmod +x gradlew
+# Rechte setzen
+chmod +x gradlew 2>/dev/null || true
 chmod +x gradle/bin/gradle 2>/dev/null || true
 
 echo "Baue Witt3D_GIS..."
 ./gradlew assembleDebug --no-daemon
 
 if [ -f "app/build/outputs/apk/debug/app-debug.apk" ]; then
-    echo "Build erfolgreich! APK bereit."
+    echo "Build erfolgreich! APK: app/build/outputs/apk/debug/app-debug.apk"
 else
     echo "Build fehlgeschlagen."
     exit 1
 fi
+
+echo "=== Setup abgeschlossen! ==="
