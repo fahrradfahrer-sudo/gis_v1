@@ -1,2 +1,2 @@
 @echo off
-call "%~dp0gradle\bin\gradle.bat" %*
+call gradle\wrapper\gradle-wrapper.jar %*
